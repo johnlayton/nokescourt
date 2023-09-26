@@ -33,8 +33,8 @@ actor Client
 participant Container
 participant ContentNegotiatingViewResolver
 participant MustacheViewResolver
-participant MyPdfViewResolver
-participant ExamsViewController
+participant "[[https://github.com/johnlayton/nokescourt/blob/main/src/main/java/org/nokescourt/NokesCourtApplication.java#L198 MyPdfViewResolver]]" as MyPdfViewResolver
+participant "[[https://github.com/johnlayton/nokescourt/blob/main/src/main/java/org/nokescourt/NokesCourtApplication.java#L83 ExamsViewController]]" as ExamsViewController
 participant "[[https://github.com/johnlayton/nokescourt/blob/main/src/main/java/org/nokescourt/NokesCourtApplication.java#L103 ExamService]]" as ExamService
 
 Client -> Container : [get] /view/exam?format=html
