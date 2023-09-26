@@ -1,0 +1,16 @@
+[versions]
+springboot = "3.1.4"
+
+[libraries]
+spring-boot-starter-web = { module = "org.springframework.boot:spring-boot-starter-web" }
+spring-boot-starter-mustache = { module = "org.springframework.boot:spring-boot-starter-mustache" }
+jackson-dataformat-xml = { module = "com.fasterxml.jackson.dataformat:jackson-dataformat-xml" }
+pdfbox = { group = "org.apache.pdfbox", name = "pdfbox", version = "3.0.0" }
+openpdf = { group = "com.github.librepdf", name = "openpdf", version = "1.3.30" }
+itext = { group = "com.itextpdf", name = "itext-core", version = "8.0.1" }
+
+[bundles]
+
+[plugins]
+spring-boot = { id = 'org.springframework.boot', version.ref = 'springboot' }
+spring-dependency-management = { id = 'io.spring.dependency-management', version = '1.1.0' }

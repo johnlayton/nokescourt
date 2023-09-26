@@ -1,10 +1,11 @@
 # View Resolvers
 
-Setup;
+### Design;
 
-Simple Model
+#### Simple Model
+<!--
 ```puml
-@startuml 
+@startuml class
 
 class Course {
   code :: String 
@@ -19,11 +20,14 @@ Exam -> Course
 
 @enduml
 ```
+-->
+![](docs/class.svg)
 
-Simple Access
 
+#### Simple Access
+<!--
 ```puml
-@startuml 
+@startuml sequence
 
 actor Client
 participant Container
@@ -33,44 +37,58 @@ participant MyPdfViewResolver
 participant ExamsViewController
 participant ExamService
 
-Client --> Container : [get] /view/exam?format=html
+Client -> Container : [get] /view/exam?format=html
 activate Container
-Container --> ExamsViewController : exams 
+Container -> ExamsViewController : exams 
 activate ExamsViewController
-ExamsViewController --> Container : ModelAndView("exams")
+ExamsViewController -> Container : ModelAndView("exams")
 deactivate ExamsViewController
-Container --> Container : getViewResolver
-Container --> ContentNegotiatingViewResolver : getView
-ContentNegotiatingViewResolver --> MustacheViewResolver : getView
-MustacheViewResolver --> ContentNegotiatingViewResolver
-ContentNegotiatingViewResolver --> Container
-Container --> Client 
+Container -> Container : getViewResolver
+Container -> ContentNegotiatingViewResolver : getView
+ContentNegotiatingViewResolver -> MustacheViewResolver : getView
+MustacheViewResolver -> ContentNegotiatingViewResolver
+ContentNegotiatingViewResolver -> Container
+Container -> Client 
 deactivate Container
 
-Client --> Container : [get] /view/exam?format=pdf
+Client -> Container : [get] /view/exam?format=pdf
 activate Container
-Container --> ExamsViewController : exams 
+Container -> ExamsViewController : exams 
 activate ExamsViewController
-ExamsViewController --> Container : ModelAndView("exams")
+ExamsViewController -> Container : ModelAndView("exams")
 deactivate ExamsViewController
-Container --> Container : getViewResolver
-Container --> ContentNegotiatingViewResolver : getView
-ContentNegotiatingViewResolver --> MyPdfViewResolver : getView
-MyPdfViewResolver --> ContentNegotiatingViewResolver
-ContentNegotiatingViewResolver --> Container
-Container --> Client 
+Container -> Container : getViewResolver
+Container -> ContentNegotiatingViewResolver : getView
+ContentNegotiatingViewResolver -> MyPdfViewResolver : getView
+MyPdfViewResolver -> ContentNegotiatingViewResolver
+ContentNegotiatingViewResolver -> Container
+Container -> Client 
 deactivate Container
 
 @enduml
 ```
+-->
+![](docs/sequence.svg)
 
-Run;
+### Setup;
 
 ```shell
-gradlew bootRun
+devbox install
 ```
 
-Test Rest Controller;
+#### Generate Documentation;
+
+```shell
+devbox run plantuml -tsvg -o docs README.md
+```
+
+### Run;
+
+```shell
+devbox run gradle bootRun
+```
+
+### Test Rest Controller;
 
 ```shell
 curl --header "Accept: application/json" "http://localhost:8080/rest/exams"
@@ -80,7 +98,7 @@ curl --header "Accept: application/json" "http://localhost:8080/rest/exams"
 curl --header "Accept: application/xml" "http://localhost:8080/rest/exams"
 ```
 
-Test View Controller;
+### Test View Controller;
 
 ```shell
 curl --header "Accept: application/json" "http://localhost:8080/view/exams"

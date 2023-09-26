@@ -1,0 +1,18 @@
+{
+  "lockfile_version": "1",
+  "packages": {
+    "gradle@latest": {
+      "last_modified": "2023-09-19T14:14:51Z",
+      "plugin_version": "0.0.1",
+      "resolved": "github:NixOS/nixpkgs/8b5ab8341e33322e5b66fb46ce23d724050f6606#gradle",
+      "source": "devbox-search",
+      "version": "8.3"
+    },
+    "plantuml@latest": {
+      "last_modified": "2023-09-19T14:14:51Z",
+      "resolved": "github:NixOS/nixpkgs/8b5ab8341e33322e5b66fb46ce23d724050f6606#plantuml",
+      "source": "devbox-search",
+      "version": "1.2023.10"
+    }
+  }
+}
