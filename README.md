@@ -3,24 +3,28 @@
 Setup;
 
 Simple Model
-
 ```puml
+@startuml 
 
 class Course {
-  String code
+  code :: String 
 }
 
 class Exam {
-  Course course
-  String code
+  course :: Course
+  code :: String
 }
 
 Exam -> Course
+
+@enduml
 ```
 
 Simple Access
 
 ```puml
+@startuml 
+
 actor Client
 participant Container
 participant ContentNegotiatingViewResolver
@@ -56,6 +60,8 @@ MyPdfViewResolver --> ContentNegotiatingViewResolver
 ContentNegotiatingViewResolver --> Container
 Container --> Client 
 deactivate Container
+
+@enduml
 ```
 
 Run;
@@ -90,6 +96,10 @@ curl --header "Accept: text/html" "http://localhost:8080/view/exams"
 
 ```shell
 open http://localhost:8080/view/exams?format=html
+```
+
+```shell
+open http://localhost:8080/view/exams?format=txt
 ```
 
 ```shell
