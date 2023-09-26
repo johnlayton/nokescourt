@@ -59,6 +59,10 @@ Client -> Container : [get] /view/exam?format=pdf
 activate Container
 Container -> ExamsViewController : exams 
 activate ExamsViewController
+ExamsViewController -> ExamService : listExams 
+activate ExamService
+ExamsViewController <- ExamService 
+deactivate ExamService
 ExamsViewController -> Container : ModelAndView("exams")
 deactivate ExamsViewController
 Container -> Container : getViewResolver
