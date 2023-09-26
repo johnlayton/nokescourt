@@ -172,7 +172,7 @@ public class NokesCourtApplication {
                                                final HttpServletRequest request,
                                                final HttpServletResponse response) throws Exception {
             response.getWriter().println("Exams");
-            response.getWriter().printf("%8s | %8s%s", "Course", "Exam");
+            response.getWriter().printf("%8s | %8s%n", "Course", "Exam");
             List<Exam> exams = (List<Exam>) model.get("exams");
             exams.forEach(exam -> {
                 try {
