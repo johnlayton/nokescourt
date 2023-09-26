@@ -35,7 +35,7 @@ participant ContentNegotiatingViewResolver
 participant MustacheViewResolver
 participant MyPdfViewResolver
 participant ExamsViewController
-participant "[[https://github.com/johnlayton/nokescourt/blob/8b49c476af2b1d4f45fcc28622f1be795a52df45/src/main/java/org/nokescourt/BulkMvcApplication.java#L103 ExamService]]" as ExamService
+participant "[[https://github.com/johnlayton/nokescourt/blob/main/src/main/java/org/nokescourt/NokesCourtApplication.java#L103 ExamService]]" as ExamService
 
 Client -> Container : [get] /view/exam?format=html
 activate Container

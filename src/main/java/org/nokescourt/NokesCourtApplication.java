@@ -49,10 +49,10 @@ import java.util.Map;
 import java.util.stream.Stream;
 
 @SpringBootApplication
-public class BulkMvcApplication {
+public class NokesCourtApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(BulkMvcApplication.class, args);
+        SpringApplication.run(NokesCourtApplication.class, args);
     }
 
     public record Course(String code) {
