@@ -1,7 +1,10 @@
 {
   "packages": [
     "plantuml@latest",
-    "gradle@latest"
+    "gradle@latest",
+    "jdk17@latest",
+    "xq@latest",
+    "jq@latest"
   ],
   "shell": {
     "init_hook": [

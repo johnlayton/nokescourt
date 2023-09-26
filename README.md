@@ -99,35 +99,39 @@ devbox run gradle bootRun
 ### Test Rest Controller;
 
 ```shell
-curl --header "Accept: application/json" "http://localhost:8080/rest/exams"
+devbox run curl --header "Accept: application/json" "http://localhost:8080/rest/exams"  | jq -r .
 ```
 
 ```shell
-curl --header "Accept: application/xml" "http://localhost:8080/rest/exams"
+devbox run curl --header "Accept: application/xml" "http://localhost:8080/rest/exams" | xq
 ```
 
 ### Test View Controller;
 
 ```shell
-curl --header "Accept: application/json" "http://localhost:8080/view/exams"
+devbox run curl --header "Accept: application/json" "http://localhost:8080/view/exams" | jq -r .
 ```
 
 ```shell
-curl --header "Accept: text/plain" "http://localhost:8080/view/exams"
+devbox run curl --header "Accept: text/plain" "http://localhost:8080/view/exams"
 ```
 
 ```shell
-curl --header "Accept: text/html" "http://localhost:8080/view/exams"
+devbox run url --header "Accept: text/html" "http://localhost:8080/view/exams"
 ```
 
 ```shell
-open http://localhost:8080/view/exams?format=html
+open "http://localhost:8080/view/exams?format=html"
 ```
 
 ```shell
-open http://localhost:8080/view/exams?format=txt
+open "http://localhost:8080/view/exams?format=txt"
 ```
 
 ```shell
-open http://localhost:8080/view/exams?format=pdf
+open "http://localhost:8080/view/exams?format=pdf"
+```
+
+```shell
+open "http://localhost:8080/view/exams?format=json"
 ```
