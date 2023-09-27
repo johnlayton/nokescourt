@@ -21,6 +21,7 @@ repositories {
 dependencies {
     implementation(libs.spring.boot.starter.web)
     implementation(libs.spring.boot.starter.mustache)
+    implementation(libs.spring.boot.starter.actuator)
     implementation(libs.jackson.dataformat.xml)
     implementation(libs.itext)
 }

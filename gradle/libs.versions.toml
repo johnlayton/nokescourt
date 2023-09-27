@@ -3,6 +3,7 @@ springboot = "3.1.4"
 
 [libraries]
 spring-boot-starter-web = { module = "org.springframework.boot:spring-boot-starter-web" }
+spring-boot-starter-actuator = { module = "org.springframework.boot:spring-boot-starter-actuator" }
 spring-boot-starter-mustache = { module = "org.springframework.boot:spring-boot-starter-mustache" }
 jackson-dataformat-xml = { module = "com.fasterxml.jackson.dataformat:jackson-dataformat-xml" }
 pdfbox = { group = "org.apache.pdfbox", name = "pdfbox", version = "3.0.0" }

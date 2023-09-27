@@ -1,6 +1,6 @@
 # View Resolvers
 
-### Design;
+### Design
 
 #### Simple Model
 <!--
@@ -78,25 +78,29 @@ deactivate Container
 -->
 ![](docs/sequence.svg)
 
-### Setup;
+### Setup
 
 ```shell
 devbox install
 ```
 
-### Generate Documentation;
+### Generate Documentation
 
 ```shell
 devbox run plantuml -tsvg -o docs README.md
 ```
 
-### Run;
+### Run
 
 ```shell
 devbox run gradle bootRun
 ```
 
-### Test Rest Controller;
+```shell
+devbox run server
+```
+
+### Test Rest Controller
 
 ```shell
 devbox run curl --header "Accept: application/json" "http://localhost:8080/rest/exams"  | jq -r .
@@ -106,7 +110,7 @@ devbox run curl --header "Accept: application/json" "http://localhost:8080/rest/
 devbox run curl --header "Accept: application/xml" "http://localhost:8080/rest/exams" | xq
 ```
 
-### Test View Controller;
+### Test View Controller
 
 ```shell
 devbox run curl --header "Accept: application/json" "http://localhost:8080/view/exams" | jq -r .
@@ -134,4 +138,10 @@ open "http://localhost:8080/view/exams?format=pdf"
 
 ```shell
 open "http://localhost:8080/view/exams?format=json"
+```
+
+### Show Actuator
+
+```shell
+open "http://localhost:8080/actuator"
 ```
