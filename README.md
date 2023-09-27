@@ -103,25 +103,29 @@ devbox run server
 ### Test Rest Controller
 
 ```shell
-devbox run curl --header "Accept: application/json" "http://localhost:8080/rest/exams"  | jq -r .
+devbox run 'curl --header "Accept: application/json" "http://localhost:8080/rest/exams"  | jq -r .'
 ```
 
 ```shell
-devbox run curl --header "Accept: application/xml" "http://localhost:8080/rest/exams" | xq
+devbox run 'curl --header "Accept: application/xml" "http://localhost:8080/rest/exams" | xq'
 ```
 
 ### Test View Controller
 
 ```shell
-devbox run curl --header "Accept: application/json" "http://localhost:8080/view/exams" | jq -r .
+devbox run 'curl --header "Accept: application/json" "http://localhost:8080/view/exams" | jq -r .'
 ```
 
 ```shell
-devbox run curl --header "Accept: text/plain" "http://localhost:8080/view/exams"
+devbox run 'curl --header "Accept: text/plain" "http://localhost:8080/view/exams"'
 ```
 
 ```shell
-devbox run url --header "Accept: text/html" "http://localhost:8080/view/exams"
+devbox run 'curl --header "Accept: text/html" "http://localhost:8080/view/exams"'
+```
+
+```shell
+devbox run 'wget --header "Accept: application/pdf" -O exams.pdf "http://localhost:8080/view/exams"'
 ```
 
 ```shell
