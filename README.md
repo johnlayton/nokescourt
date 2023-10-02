@@ -93,7 +93,7 @@ devbox run plantuml -tsvg -o docs README.md
 ### Run
 
 ```shell
-devbox run gradle bootRun
+devbox 'run gradle --gradle-user-home .gradle --console=rich --build-cache bootRun'
 ```
 
 ```shell

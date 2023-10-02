@@ -24,4 +24,5 @@ dependencies {
     implementation(libs.spring.boot.starter.actuator)
     implementation(libs.jackson.dataformat.xml)
     implementation(libs.itext)
+    implementation(libs.logstash.logback.encoder)
 }

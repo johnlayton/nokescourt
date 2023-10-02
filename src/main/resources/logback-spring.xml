@@ -4,20 +4,45 @@
         <include resource="org/springframework/boot/logging/logback/base.xml"/>
     </springProfile>
 
-    <springProfile name="dev">
-        <include resource="org/springframework/boot/logging/logback/base.xml"/>
-    </springProfile>
+<!--    <springProfile name="dev">-->
+<!--        <include resource="org/springframework/boot/logging/logback/base.xml"/>-->
+<!--    </springProfile>-->
 
 <!--
     <springProfile name="default">
         <appender name="jsonConsoleAppender" class="ch.qos.logback.core.ConsoleAppender">
-            <encoder class="net.logstash.logback.encoder.LogstashEncoder">
-                <jsonGeneratorDecorator class="net.logstash.logback.decorate.PrettyPrintingJsonGeneratorDecorator"/>
-            </encoder>
+&lt;!&ndash;            <encoder class="net.logstash.logback.encoder.LogstashEncoder">&ndash;&gt;
+&lt;!&ndash;                <jsonGeneratorDecorator class="net.logstash.logback.decorate.PrettyPrintingJsonGeneratorDecorator"/>&ndash;&gt;
+&lt;!&ndash;            </encoder>&ndash;&gt;
         </appender>
         <root level="INFO">
             <appender-ref ref="jsonConsoleAppender"/>
         </root>
+    </springProfile>
+-->
+
+<!--
+    <springProfile name="json">
+        <appender name="devConsoleAppender" class="ch.qos.logback.core.ConsoleAppender">
+            <encoder class="net.logstash.logback.encoder.LogstashEncoder">
+&lt;!&ndash;
+                <provider class="jdlf.compass.common.logging.ExceptionLogDetailsProvider"/>
+&ndash;&gt;
+                <jsonGeneratorDecorator class="net.logstash.logback.decorate.PrettyPrintingJsonGeneratorDecorator"/>
+            </encoder>
+        </appender>
+    </springProfile>
+-->
+<!--
+    <springProfile name="json">
+        <appender name="devConsoleAppender" class="ch.qos.logback.core.ConsoleAppender">
+            <encoder class="net.logstash.logback.encoder.LogstashEncoder">
+&lt;!&ndash;
+                <provider class="jdlf.compass.common.logging.ExceptionLogDetailsProvider"/>
+&ndash;&gt;
+                <jsonGeneratorDecorator class="net.logstash.logback.decorate.PrettyPrintingJsonGeneratorDecorator"/>
+            </encoder>
+        </appender>
     </springProfile>
 -->
 

@@ -6,3 +6,6 @@ management:
     web:
       exposure:
         include: '*'
+logging:
+  level:
+    org.nokescourt: debug
