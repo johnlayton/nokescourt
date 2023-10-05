@@ -9,3 +9,13 @@ management:
 logging:
   level:
     org.nokescourt: debug
+
+spring:
+  jackson:
+    property-naming-strategy: LOWER_CAMEL_CASE
+    serialization:
+      WRITE_DATES_AS_TIMESTAMPS: false
+      FAIL_ON_EMPTY_BEANS: false
+    deserialization:
+      ADJUST_DATES_TO_CONTEXT_TIME_ZONE: false
+      FAIL_ON_UNKNOWN_PROPERTIES: true

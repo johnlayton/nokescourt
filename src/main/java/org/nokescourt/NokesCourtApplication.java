@@ -1,5 +1,8 @@
 package org.nokescourt;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.fasterxml.jackson.module.paramnames.ParameterNamesModule;
 import com.itextpdf.io.font.constants.StandardFonts;
 import com.itextpdf.kernel.colors.ColorConstants;
 import com.itextpdf.kernel.font.PdfFont;
@@ -14,6 +17,7 @@ import com.itextpdf.layout.element.Cell;
 import com.itextpdf.layout.element.Paragraph;
 import com.itextpdf.layout.element.Table;
 import com.itextpdf.layout.properties.TextAlignment;
+import com.samskivert.mustache.Mustache.Lambda;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
@@ -26,6 +30,10 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.event.EventListener;
 import org.springframework.core.Ordered;
 import org.springframework.http.MediaType;
+import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.http.converter.xml.MappingJackson2XmlHttpMessageConverter;
 import org.springframework.lang.NonNull;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -48,10 +56,9 @@ import org.springframework.web.servlet.view.ContentNegotiatingViewResolver;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
 import java.io.IOException;
-import java.time.LocalTime;
+import java.text.SimpleDateFormat;
+import java.time.OffsetDateTime;
 import java.util.*;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
 
@@ -129,10 +136,24 @@ public class NokesCourtApplication {
             return new ModelAndView("sse", Collections.emptyMap());
         }
 
+        @GetMapping(value = "view/events/tmpl", produces = {
+                MediaType.APPLICATION_JSON_VALUE,
+                MediaType.APPLICATION_XML_VALUE,
+                MediaType.APPLICATION_PDF_VALUE,
+                MediaType.TEXT_PLAIN_VALUE,
+                MediaType.TEXT_HTML_VALUE,
+                "text/template",
+                "text/mustache"
+        })
+        public ModelAndView tmpl() {
+            return new ModelAndView("tmpl", Collections.emptyMap());
+        }
+
         @GetMapping("view/events/sse")
-        public SseEmitter streamSseMvc() {
+        public SseEmitter sse() {
             return examEventListener.register(new SseEmitter());
         }
+
 
 /*
         @GetMapping(path = "/stream-flux", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
@@ -162,13 +183,19 @@ public class NokesCourtApplication {
 
     public static class ExamEvent {
         private final UUID id;
+        private final OffsetDateTime dt;
 
         public ExamEvent() {
             id = UUID.randomUUID();
+            dt = OffsetDateTime.now();
         }
 
         public UUID getId() {
             return id;
+        }
+
+        public OffsetDateTime getDt() {
+            return dt;
         }
     }
 
@@ -178,24 +205,59 @@ public class NokesCourtApplication {
         private static final Logger LOGGER = LoggerFactory.getLogger(ExamEventListener.class);
         private final List<SseEmitter> emitters = new ArrayList<>();
 
+        private ObjectMapper mapper;
+
+        public ExamEventListener(ObjectMapper mapper) {
+            this.mapper = mapper;
+        }
+
 //        @EventListener
 //        ReturnedEvent handleUserRemovedEvent(UserRemovedEvent event) {
 //            // handle UserRemovedEvent ...
 //            return new ReturnedEvent();
 //        }
 
+
+        public record ExamEventWrapper(ExamEvent event) {
+//            java record String date = """
+//                            function() {
+//                              return function(text, render) {
+//                                 console.log(text);
+//                                 return "placeholder";
+//                              };
+//                            }
+//                            """;
+//            public String getDate() {
+//                return """
+//                            function() {
+//                              console.log("get date function");
+//                              return function(text, render) {
+//                                 console.log(text);
+//                                 return "placeholder";
+//                              };
+//                            }
+//                            """;
+//            }
+        }
+
+//        {"event":{"id":"9e3a2a1d-731e-4c3c-9cdf-dd5fd8a4bc94","dt":1696394126.472544000},"date":"function() {\n  console.log(\"get date function\");\n  return function(text, render) {\n     console.log(text);\n     return \"placeholder\";\n  };\n}\n"}
+
         @EventListener
         void handleExamEvent(final ExamEvent event) {
             // handle ReturnedEvent ...
-            LOGGER.error("Receive Event = {}", event.getId());
+            LOGGER.info("Receive Event = {}", event.getId());
             List.copyOf(emitters).forEach(emitter -> {
                 try {
+                    LOGGER.info("Send Event = {} to {}", event.getId(), emitter.toString());
+                    LOGGER.info("Send Event = {}", mapper.writer().writeValueAsString(new ExamEventWrapper(event)));
                     emitter.send(SseEmitter.event()
-                                    .data(event.getId().toString())
+//                                    .data(mapper.writer().writeValueAsString(event), MediaType.APPLICATION_JSON)
+                                    .data(new ExamEventWrapper(event), MediaType.APPLICATION_JSON)
                                     .id(event.getId().toString())
-                                    .name("sse event - mvc")
+                                    .name("event")
                     );
                 } catch (Exception e) {
+                    LOGGER.error("Error Sending Event = {} to {}", event.getId(), emitter.toString(), e);
                     emitter.completeWithError(e);
                     emitters.remove(emitter);
                 }
@@ -247,14 +309,84 @@ public class NokesCourtApplication {
 
         @Scheduled(fixedRate = 10L, timeUnit = TimeUnit.SECONDS)
         public void publishEvent() {
-            LOGGER.error("Publish Event");
-            publisher.publishEvent(new ExamEvent());
+            final ExamEvent event = new ExamEvent();
+            LOGGER.info("Publish Event = {}", event.getId());
+            publisher.publishEvent(event);
         }
     }
+
+    @ControllerAdvice
+    public static class LayoutAdvice {
+
+//        private Mustache.Compiler compiler;
+//
+//        public LayoutAdvice(Mustache.Compiler compiler) {
+//            this.compiler = compiler;
+//        }
+
+        @ModelAttribute("raw")
+        public Lambda raw() {
+            return (frag, out) -> {
+                out.write(frag.decompile());
+            };
+        }
+
+//        @ModelAttribute("date")
+//        public Lambda date() {
+//            return (frag, out) -> {
+//                out.write(frag.decompile());
+//            };
+//        }
+
+    }
+
+//    public static class Layout implements Lambda {
+//        private Mustache.Compiler compiler;
+//
+//        public Layout(Mustache.Compiler compiler) {
+//            this.compiler = compiler;
+//        }
+//
+//        String body;
+//        @Override
+//        public void execute(Fragment frag, Writer out) throws IOException {
+////            body = frag.execute();
+//            frag.decompile()
+//            compiler.compile(frag.execute()).execute(frag.context(), out);
+//        }
+//    }
 
     @Configuration
     @EnableWebMvc
     public static class MvcConfiguration implements WebMvcConfigurer {
+
+//        @Bean
+//        public Mustache.Compiler mustacheCompiler(
+//                Mustache.TemplateLoader templateLoader,
+//                Environment environment) {
+//
+////            MustacheEnvironmentCollector collector
+////                    = new MustacheEnvironmentCollector();
+////            collector.setEnvironment(environment);
+//
+//            return Mustache.compiler()
+//                    .
+//                    .defaultValue("Some Default Value")
+//                    .withLoader(templateLoader)
+//                    .withCollector(collector);
+//        }
+
+
+        @Override
+        public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
+            Jackson2ObjectMapperBuilder builder = new Jackson2ObjectMapperBuilder()
+                    .indentOutput(true)
+                    .dateFormat(new SimpleDateFormat("yyyy-MM-dd"))
+                    .modulesToInstall(new ParameterNamesModule(), new JavaTimeModule());
+            converters.add(new MappingJackson2HttpMessageConverter(builder.build()));
+            converters.add(new MappingJackson2XmlHttpMessageConverter(builder.createXmlMapper(true).build()));
+        }
+
         @Override
         public void configureContentNegotiation(ContentNegotiationConfigurer configurer) {
             configurer

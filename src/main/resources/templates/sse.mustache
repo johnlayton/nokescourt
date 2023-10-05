@@ -1,17 +1,191 @@
-<html>
+<!doctype html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
 <head>
-    <title>Exams</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Events</title>
     <script src="https://unpkg.com/htmx.org@1.9.6"
             integrity="sha384-FhXw7b6AlE/jyjlZH5iHa/tTe9EpJ1Y55RjcgPbjeWMskSxZt1v9qkxLJWNJaGni"
             crossorigin="anonymous"></script>
     <script src="https://unpkg.com/htmx.org@1.9.6/dist/ext/sse.js">
-        // <script src="https://unpkg.com/htmx.org/dist/ext/sse.js">
     </script>
+<!--    <script src="https://unpkg.com/htmx.org@1.9.6/dist/ext/client-side-templates.js">-->
+<!--    </script>-->
+    <script type="application/javascript">
+        htmx.defineExtension('client-side-templates', {
+            transformResponse : function(text, xhr, elt) {
+
+                // var mustacheTemplate = htmx.closest(elt, "[mustache-template]");
+                // if (mustacheTemplate) {
+                //     var data = JSON.parse(text);
+                //     var templateId = mustacheTemplate.getAttribute('mustache-template');
+                //     var template = htmx.find("#" + templateId);
+                //     if (template) {
+                //         return Mustache.render(template.innerHTML, data);
+                //     } else {
+                //         throw "Unknown mustache template: " + templateId;
+                //     }
+                // }
+                //
+                // var mustacheArrayTemplate = htmx.closest(elt, "[mustache-array-template]");
+                // if (mustacheArrayTemplate) {
+                //     var data = JSON.parse(text);
+                //     var templateId = mustacheArrayTemplate.getAttribute('mustache-array-template');
+                //     var template = htmx.find("#" + templateId);
+                //     if (template) {
+                //         return Mustache.render(template.innerHTML, {"data": data });
+                //     } else {
+                //         throw "Unknown mustache template: " + templateId;
+                //     }
+                // }
+                //
+                // var handlebarsTemplate = htmx.closest(elt, "[handlebars-template]");
+                // if (handlebarsTemplate) {
+                //     var data = JSON.parse(text);
+                //     var templateName = handlebarsTemplate.getAttribute('handlebars-template');
+                //     return Handlebars.partials[templateName](data);
+                // }
+                var handlebarsTemplate = htmx.closest(elt, "[handlebars-template]");
+                if (handlebarsTemplate) {
+                    // get json data
+                    var data = JSON.parse(text);
+                    // find value of the handlebars-template attribute
+                    var templateName = handlebarsTemplate.getAttribute('handlebars-template');
+                    // use this name to find the template element by id
+                    var templateElement = htmx.find('#' + templateName);
+                    // make the actual template
+                    var template = Handlebars.compile(templateElement.innerHTML);
+                    // register compiled template with Handlebars
+                    Handlebars.registerPartial(templateName, template);
+                    // run template on data
+                    return Handlebars.partials[templateName](data);
+                }
+                //
+                // var handlebarsArrayTemplate = htmx.closest(elt, "[handlebars-array-template]");
+                // if (handlebarsArrayTemplate) {
+                //     var data = JSON.parse(text);
+                //     var templateName = handlebarsArrayTemplate.getAttribute('handlebars-array-template');
+                //     return Handlebars.partials[templateName]({"data": data});
+                // }
+                //
+                // var nunjucksTemplate = htmx.closest(elt, "[nunjucks-template]");
+                // if (nunjucksTemplate) {
+                //     var data = JSON.parse(text);
+                //     var templateName = nunjucksTemplate.getAttribute('nunjucks-template');
+                //     var template = htmx.find('#' + templateName);
+                //     if (template) {
+                //         return nunjucks.renderString(template.innerHTML, data);
+                //     } else {
+                //         return nunjucks.render(templateName, data);
+                //     }
+                // }
+                //
+                // var xsltTemplate = htmx.closest(elt, "[xslt-template]");
+                // if (xsltTemplate) {
+                //     var templateId = xsltTemplate.getAttribute('xslt-template');
+                //     var template = htmx.find("#" + templateId);
+                //     if (template) {
+                //         var content = template.innerHTML ? new DOMParser().parseFromString(template.innerHTML, 'application/xml')
+                //                 : template.contentDocument;
+                //         var processor = new XSLTProcessor();
+                //         processor.importStylesheet(content);
+                //         var data = new DOMParser().parseFromString(text, "application/xml");
+                //         var frag = processor.transformToFragment(data, document);
+                //         return new XMLSerializer().serializeToString(frag);
+                //     } else {
+                //         throw "Unknown XSLT template: " + templateId;
+                //     }
+                // }
+                //
+                // var nunjucksArrayTemplate = htmx.closest(elt, "[nunjucks-array-template]");
+                // if (nunjucksArrayTemplate) {
+                //     var data = JSON.parse(text);
+                //     var templateName = nunjucksArrayTemplate.getAttribute('nunjucks-array-template');
+                //     var template = htmx.find('#' + templateName);
+                //     if (template) {
+                //         return nunjucks.renderString(template.innerHTML, {"data": data});
+                //     } else {
+                //         return nunjucks.render(templateName, {"data": data});
+                //     }
+                // }
+                return text;
+            }
+        });
+    </script>
+    <!--
+        <script src="https://unpkg.com/handlebars@4.7.8"></script>
+    -->
+    <!--    <script src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.js"></script>-->
+    <!--    <script src="https://cdn.jsdelivr.net/npm/handlebars@4.7.8/dist/cjs/handlebars.min.js"></script>-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/2.0.0/handlebars.min.js"></script>
+    <script type="application/javascript">
+        Handlebars.registerHelper('date', function (aString) {
+            return new Date(aString).getSeconds();
+            // console.log(aString);
+            // return aString;
+        })
+    </script>
+    <!--
+        <script src="https://unpkg.com/mustache@latest"></script>
+        <script src="https://unpkg.com/browse/requirejs-browser@2.1.9/require.js"></script>
+        <script src="https://unpkg.com/mustache-wax@0.6.0/lib/mustache-wax.js"></script>
+        <script type="application/javascript">
+            Mustache.Formatters = {
+                "date": function (dt) {
+                    console.log(dt);
+                    debugger;
+                }
+            };
+        </script>
+    -->
+    <script src="./events/tmpl" id="event-list-item" type="text/mustache">
+    </script>
+    <script type="application/javascript">
+        document.head.querySelectorAll("script[type = 'text/mustache']").forEach(ele => {
+            fetch(ele.getAttribute('src')).then(function (response) {
+                response.text().then(function (text) {
+                    ele.innerHTML = text;
+                })
+            });
+        });
+    </script>
+    <style>
+        body {
+            font-family: "Courier New", serif;
+        }
+    </style>
 </head>
 <body>
-<h1>Latest Event</h1>
-<div hx-ext="sse" sse-connect="/view/events/sse" sse-swap="sse event - mvc">
-  Event Id will appear here
+<h1>Latest Events</h1>
+<div hx-ext="client-side-templates">
+    <div hx-ext="sse" sse-connect="/view/events/sse">
+        <div sse-swap="event"
+             hx-swap="afterbegin"
+             hx-target="#event-list"
+             handlebars-template="event-list-item">
+        </div>
+    </div>
+    <!--
+        <div hx-ext="sse" sse-connect="/view/events/sse">
+            <div sse-swap="event"
+                 hx-swap="afterbegin"
+                 hx-target="#event-list"
+                 mustache-template="event-list-item">
+            </div>
+        </div>
+    -->
+    <ul id="event-list">
+        <li>Event Ids will appear here</li>
+    </ul>
+    <!--
+        <script src="http://localhost:8080/view/events/tmpl" id="event-list-item" type="text/mustache"></script>
+    -->
+    <!--
+    <template id="event-list-item">
+        <li>{{#raw}}{{ id }} - {{#date}}{{ dt }}{{/date}}{{/raw}}</li>
+    </template>
+-->
 </div>
 </body>
 </html>
