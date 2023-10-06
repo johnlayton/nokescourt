@@ -7,11 +7,11 @@
 ```puml
 @startuml class
 
-class "[[https://github.com/johnlayton/nokescourt/blob/main/src/main/java/org/nokescourt/model/Course Course]]" as Course {
+class "[[https://github.com/johnlayton/nokescourt/blob/main/src/main/java/org/nokescourt/model/Course.java Course]]" as Course {
   code :: String 
 }
 
-class "[[https://github.com/johnlayton/nokescourt/blob/main/src/main/java/org/nokescourt/model/Exam Exam]]" as Exam {
+class "[[https://github.com/johnlayton/nokescourt/blob/main/src/main/java/org/nokescourt/model/Exam.java Exam]]" as Exam {
   course :: Course
   code :: String
 }
@@ -33,9 +33,9 @@ actor Client
 participant Container
 participant ContentNegotiatingViewResolver
 participant MustacheViewResolver
-participant "[[https://github.com/johnlayton/nokescourt/blob/main/src/main/java/org/nokescourt/view/MyPdfViewResolver MyPdfViewResolver]]" as MyPdfViewResolver
-participant "[[https://github.com/johnlayton/nokescourt/blob/main/src/main/java/org/nokescourt/controller/ExamsViewController ExamsViewController]]" as ExamsViewController
-participant "[[https://github.com/johnlayton/nokescourt/blob/main/src/main/java/org/nokescourt/model/ExamService ExamService]]" as ExamService
+participant "[[https://github.com/johnlayton/nokescourt/blob/main/src/main/java/org/nokescourt/view/MyPdfViewResolver.java MyPdfViewResolver]]" as MyPdfViewResolver
+participant "[[https://github.com/johnlayton/nokescourt/blob/main/src/main/java/org/nokescourt/controller/ExamsViewController.java ExamsViewController]]" as ExamsViewController
+participant "[[https://github.com/johnlayton/nokescourt/blob/main/src/main/java/org/nokescourt/model/ExamService.java ExamService]]" as ExamService
 
 Client -> Container : [get] /view/exam?format=html
 activate Container
