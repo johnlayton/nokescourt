@@ -1,6 +1,5 @@
 package org.nokescourt.controller;
 
-import org.nokescourt.event.ExamEventListener;
 import org.nokescourt.model.ExamService;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -13,12 +12,9 @@ import java.util.Map;
 @Controller
 public class ExamsViewController {
     private final ExamService examService;
-    private final ExamEventListener examEventListener;
 
-    public ExamsViewController(final ExamService examService,
-                               final ExamEventListener examEventListener) {
+    public ExamsViewController(final ExamService examService) {
         this.examService = examService;
-        this.examEventListener = examEventListener;
     }
 
     @RequestMapping(value = "view/exams", method = RequestMethod.GET, produces = {
