@@ -7,11 +7,11 @@
 ```puml
 @startuml class
 
-class Course {
+class "[[https://github.com/johnlayton/nokescourt/blob/main/src/main/java/org/nokescourt/model/Course Course]]" as Course {
   code :: String 
 }
 
-class Exam {
+class "[[https://github.com/johnlayton/nokescourt/blob/main/src/main/java/org/nokescourt/model/Exam Exam]]" as Exam {
   course :: Course
   code :: String
 }
@@ -33,9 +33,9 @@ actor Client
 participant Container
 participant ContentNegotiatingViewResolver
 participant MustacheViewResolver
-participant "[[https://github.com/johnlayton/nokescourt/blob/main/src/main/java/org/nokescourt/NokesCourtApplication.java#L198 MyPdfViewResolver]]" as MyPdfViewResolver
-participant "[[https://github.com/johnlayton/nokescourt/blob/main/src/main/java/org/nokescourt/NokesCourtApplication.java#L83 ExamsViewController]]" as ExamsViewController
-participant "[[https://github.com/johnlayton/nokescourt/blob/main/src/main/java/org/nokescourt/NokesCourtApplication.java#L103 ExamService]]" as ExamService
+participant "[[https://github.com/johnlayton/nokescourt/blob/main/src/main/java/org/nokescourt/view/MyPdfViewResolver MyPdfViewResolver]]" as MyPdfViewResolver
+participant "[[https://github.com/johnlayton/nokescourt/blob/main/src/main/java/org/nokescourt/controller/ExamsViewController ExamsViewController]]" as ExamsViewController
+participant "[[https://github.com/johnlayton/nokescourt/blob/main/src/main/java/org/nokescourt/model/ExamService ExamService]]" as ExamService
 
 Client -> Container : [get] /view/exam?format=html
 activate Container
@@ -88,6 +88,10 @@ devbox install
 
 ```shell
 devbox run plantuml -tsvg -o docs README.md
+```
+
+```shell
+devbox run documentation
 ```
 
 ### Run

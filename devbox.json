@@ -8,13 +8,14 @@
   ],
   "shell": {
     "init_hook": [
-      "echo 'Running with devbox!'",
-      "java --version",
-      "gradle --version"
+      "echo 'Running with devbox!'"
     ],
     "scripts": {
       "test": [
         "echo \"Error: no test specified\" && exit 1"
+      ],
+      "documentation": [
+        "plantuml -tsvg -o ./docs README.md"
       ],
       "server": [
         "gradle --gradle-user-home .gradle --console=rich --build-cache bootRun"
