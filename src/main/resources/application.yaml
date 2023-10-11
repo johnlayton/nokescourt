@@ -20,6 +20,9 @@ spring:
       ADJUST_DATES_TO_CONTEXT_TIME_ZONE: false
       FAIL_ON_UNKNOWN_PROPERTIES: true
 
+  main:
+    allow-bean-definition-overriding: true
+
 handlebars:
   cache: false
   resolver:
