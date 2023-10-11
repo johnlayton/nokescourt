@@ -7,6 +7,7 @@ import org.nokescourt.handlebars.autoconfigure.HandlebarsHelper;
 import org.nokescourt.view.JsonViewResolver;
 import org.nokescourt.view.MyPdfViewResolver;
 import org.nokescourt.view.TxtView;
+import org.nokescourt.view.XmlViewResolver;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -49,10 +50,15 @@ public class ViewConfiguration {
     }
 */
 
-    @Bean
+/*    @Bean
     public JsonViewResolver jsonViewResolver() {
         return new JsonViewResolver();
     }
+
+    @Bean
+    public XmlViewResolver xmlViewResolver() {
+        return new XmlViewResolver();
+    }*/
 
     @Bean
     public ViewResolver contentNegotiatingViewResolver(final ContentNegotiationManager manager) {

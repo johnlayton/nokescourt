@@ -121,6 +121,14 @@ devbox run 'curl --header "Accept: application/json" "http://localhost:8080/view
 ```
 
 ```shell
+devbox run 'wget --header "Accept: application/json" -O exams.json "http://localhost:8080/view/exams"'
+```
+
+```shell
+devbox run 'wget -O exams.json "http://localhost:8080/view/exams?format=json"'
+```
+
+```shell
 devbox run 'curl --header "Accept: text/plain" "http://localhost:8080/view/exams"'
 ```
 
