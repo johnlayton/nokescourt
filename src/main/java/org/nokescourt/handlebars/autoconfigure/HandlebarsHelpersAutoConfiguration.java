@@ -8,6 +8,7 @@ import com.github.jknack.handlebars.helper.*;
 import org.nokescourt.handlebars.springmvc.HandlebarsViewResolver;
 import jakarta.annotation.PostConstruct;
 import org.joda.time.format.DateTimeFormat;
+import org.nokescourt.view.HandlebarsPdfViewResolver;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanPostProcessor;
@@ -29,10 +30,13 @@ public class HandlebarsHelpersAutoConfiguration {
 
         @Autowired
         private HandlebarsViewResolver handlebarsViewResolver;
+        @Autowired
+        private HandlebarsPdfViewResolver handlebarsPdfViewResolver;
 
         @PostConstruct
         public void registerHelper() {
             handlebarsViewResolver.registerHelper("json", Jackson2Helper.INSTANCE);
+            handlebarsPdfViewResolver.registerHelper("json", Jackson2Helper.INSTANCE);
         }
     }
 
@@ -42,10 +46,13 @@ public class HandlebarsHelpersAutoConfiguration {
 
         @Autowired
         private HandlebarsViewResolver handlebarsViewResolver;
+        @Autowired
+        private HandlebarsPdfViewResolver handlebarsPdfViewResolver;
 
         @PostConstruct
         public void registerHelper() {
             handlebarsViewResolver.registerHelper("assign", AssignHelper.INSTANCE);
+            handlebarsPdfViewResolver.registerHelper("assign", AssignHelper.INSTANCE);
         }
     }
 
@@ -55,10 +62,13 @@ public class HandlebarsHelpersAutoConfiguration {
 
         @Autowired
         private HandlebarsViewResolver handlebarsViewResolver;
+        @Autowired
+        private HandlebarsPdfViewResolver handlebarsPdfViewResolver;
 
         @PostConstruct
         public void registerHelper() {
             handlebarsViewResolver.registerHelper("include", IncludeHelper.INSTANCE);
+            handlebarsPdfViewResolver.registerHelper("include", IncludeHelper.INSTANCE);
         }
     }
 
@@ -68,10 +78,13 @@ public class HandlebarsHelpersAutoConfiguration {
 
         @Autowired
         private HandlebarsViewResolver handlebarsViewResolver;
+        @Autowired
+        private HandlebarsPdfViewResolver handlebarsPdfViewResolver;
 
         @PostConstruct
         public void registerHelper() {
             handlebarsViewResolver.registerHelper("md", MarkdownHelper.INSTANCE);
+            handlebarsPdfViewResolver.registerHelper("md", MarkdownHelper.INSTANCE);
         }
     }
 
@@ -81,10 +94,13 @@ public class HandlebarsHelpersAutoConfiguration {
 
         @Autowired
         private HandlebarsViewResolver handlebarsViewResolver;
+        @Autowired
+        private HandlebarsPdfViewResolver handlebarsPdfViewResolver;
 
         @PostConstruct
         public void registerHelpers() {
             NumberHelper.register(handlebarsViewResolver.getHandlebars());
+            NumberHelper.register(handlebarsPdfViewResolver.getHandlebars());
         }
     }
 
@@ -94,10 +110,13 @@ public class HandlebarsHelpersAutoConfiguration {
 
         @Autowired
         private HandlebarsViewResolver handlebarsViewResolver;
+        @Autowired
+        private HandlebarsPdfViewResolver handlebarsPdfViewResolver;
 
         @PostConstruct
         public void registerHelpers() {
             HumanizeHelper.register(handlebarsViewResolver.getHandlebars());
+            HumanizeHelper.register(handlebarsPdfViewResolver.getHandlebars());
         }
     }
 
@@ -107,10 +126,13 @@ public class HandlebarsHelpersAutoConfiguration {
 
         @Autowired
         private HandlebarsViewResolver handlebarsViewResolver;
+        @Autowired
+        private HandlebarsPdfViewResolver handlebarsPdfViewResolver;
 
         @PostConstruct
         public void registerHelpers() {
             handlebarsViewResolver.registerHelpers(JodaHelper.class);
+            handlebarsPdfViewResolver.registerHelpers(JodaHelper.class);
         }
     }
 
@@ -120,10 +142,13 @@ public class HandlebarsHelpersAutoConfiguration {
 
         @Autowired
         private HandlebarsViewResolver handlebarsViewResolver;
+        @Autowired
+        private HandlebarsPdfViewResolver handlebarsPdfViewResolver;
 
         @PostConstruct
         public void registerHelpers() {
             StringHelpers.register(handlebarsViewResolver.getHandlebars());
+            StringHelpers.register(handlebarsPdfViewResolver.getHandlebars());
         }
     }
 
@@ -144,6 +169,30 @@ public class HandlebarsHelpersAutoConfiguration {
                         handlebarsViewResolver.registerHelper(fnann.value(), helper);
                     } else {
                         handlebarsViewResolver.registerHelpers(bean);
+                    }
+                }
+                return bean;
+            }
+        };
+    }
+
+    @Bean
+    public BeanPostProcessor handlebarsPdfBeanPostProcessor(final HandlebarsPdfViewResolver handlebarsPdfViewResolver) {
+        return new BeanPostProcessor() {
+            @Override
+            public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
+                return bean;
+            }
+
+            @Override
+            public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
+                HandlebarsHelper annotation = findAnnotation(bean.getClass(), HandlebarsHelper.class);
+                if (annotation != null) {
+                    if (bean instanceof Helper<?> helper) {
+                        HelperFunction fnann = findAnnotation(bean.getClass(), HelperFunction.class);
+                        handlebarsPdfViewResolver.registerHelper(fnann.value(), helper);
+                    } else {
+                        handlebarsPdfViewResolver.registerHelpers(bean);
                     }
                 }
                 return bean;

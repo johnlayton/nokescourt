@@ -1,7 +1,10 @@
 package org.nokescourt.configuration;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fasterxml.jackson.module.paramnames.ParameterNamesModule;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
@@ -25,17 +28,22 @@ import java.util.Locale;
 @EnableWebMvc
 public class MvcConfiguration implements WebMvcConfigurer {
 
+    @Autowired
+    private ObjectMapper objectMapper;
+
     @Override
     public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
         Jackson2ObjectMapperBuilder builder = new Jackson2ObjectMapperBuilder()
+                .featuresToDisable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
                 .indentOutput(true)
                 .dateFormat(new SimpleDateFormat("yyyy-MM-dd"))
                 .modulesToInstall(
                         new ParameterNamesModule(),
                         new JavaTimeModule()
                 );
-        converters.add(new MappingJackson2HttpMessageConverter(builder.build()));
-        converters.add(new MappingJackson2XmlHttpMessageConverter(builder.createXmlMapper(true).build()));
+//        converters.add(new MappingJackson2HttpMessageConverter(builder.build()));
+//        converters.add(new MappingJackson2HttpMessageConverter(objectMapper));
+//        converters.add(new MappingJackson2XmlHttpMessageConverter(builder.createXmlMapper(true).build()));
     }
 
     @Override

@@ -32,6 +32,7 @@ dependencies {
     implementation(libs.handlebars.jackson2)
     implementation(libs.joda.time)
     implementation(libs.jackson.dataformat.xml)
-    implementation(libs.itext)
+    implementation(libs.itext.core)
+    implementation(libs.itext.html)
     implementation(libs.logstash.logback.encoder)
 }

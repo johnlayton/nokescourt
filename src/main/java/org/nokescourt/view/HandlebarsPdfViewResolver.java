@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.nokescourt.handlebars.springmvc;
+package org.nokescourt.view;
 
 import com.github.jknack.handlebars.Formatter;
 import com.github.jknack.handlebars.*;
@@ -27,9 +27,12 @@ import com.github.jknack.handlebars.helper.I18nHelper;
 import com.github.jknack.handlebars.helper.I18nSource;
 import com.github.jknack.handlebars.io.TemplateLoader;
 import com.github.jknack.handlebars.io.URLTemplateLoader;
+import org.nokescourt.handlebars.springmvc.MessageSourceHelper;
+import org.nokescourt.handlebars.springmvc.SpringTemplateLoader;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.MessageSource;
+import org.springframework.http.MediaType;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.view.AbstractTemplateViewResolver;
 import org.springframework.web.servlet.view.AbstractUrlBasedView;
@@ -55,13 +58,13 @@ import static java.util.Objects.requireNonNull;
  * @author edgar.espina
  * @since 0.1
  */
-public class HandlebarsViewResolver extends AbstractTemplateViewResolver
+public class HandlebarsPdfViewResolver extends AbstractTemplateViewResolver
     implements InitializingBean, HelperRegistry {
 
   /**
    * The default content type.
    */
-  public static final String DEFAULT_CONTENT_TYPE = "text/html;charset=UTF-8";
+  public static final String DEFAULT_CONTENT_TYPE = MediaType.APPLICATION_PDF_VALUE; //"text/html;charset=UTF-8";
 
   /**
    * The handlebars object.
@@ -119,11 +122,11 @@ public class HandlebarsViewResolver extends AbstractTemplateViewResolver
   private Charset charset = StandardCharsets.UTF_8;
 
   /**
-   * Creates a new {@link HandlebarsViewResolver}.
+   * Creates a new {@link HandlebarsPdfViewResolver}.
    *
    * @param viewClass The view's class. Required.
    */
-  public HandlebarsViewResolver(final Class<? extends HandlebarsView> viewClass) {
+  public HandlebarsPdfViewResolver(final Class<? extends HandlebarsPdfView> viewClass) {
     setViewClass(viewClass);
     setContentType(DEFAULT_CONTENT_TYPE);
     setPrefix(TemplateLoader.DEFAULT_PREFIX);
@@ -131,33 +134,33 @@ public class HandlebarsViewResolver extends AbstractTemplateViewResolver
   }
 
   /**
-   * Creates a new {@link HandlebarsViewResolver}.
+   * Creates a new {@link HandlebarsPdfViewResolver}.
    */
-  public HandlebarsViewResolver() {
-    this(HandlebarsView.class);
+  public HandlebarsPdfViewResolver() {
+    this(HandlebarsPdfView.class);
   }
 
   /**
-   * Creates a new {@link HandlebarsViewResolver} that utilizes the parameter handlebars for the
+   * Creates a new {@link HandlebarsPdfViewResolver} that utilizes the parameter handlebars for the
    * underlying template lifecycle management.
    *
    * @param handlebars The {@link Handlebars} instance used for template lifecycle management.
    *                   Required.
    */
-  public HandlebarsViewResolver(final Handlebars handlebars) {
-    this(handlebars, HandlebarsView.class);
+  public HandlebarsPdfViewResolver(final Handlebars handlebars) {
+    this(handlebars, HandlebarsPdfView.class);
   }
 
   /**
-   * Creates a new {@link HandlebarsViewResolver} that utilizes the parameter handlebars for the
+   * Creates a new {@link HandlebarsPdfViewResolver} that utilizes the parameter handlebars for the
    * underlying template lifecycle management.
    *
    * @param handlebars The {@link Handlebars} instance used for template lifecycle management.
    *                   Required.
    * @param viewClass The view's class. Required.
    */
-  public HandlebarsViewResolver(final Handlebars handlebars,
-                                final Class<? extends HandlebarsView> viewClass) {
+  public HandlebarsPdfViewResolver(final Handlebars handlebars,
+                                   final Class<? extends HandlebarsPdfView> viewClass) {
     this(viewClass);
 
     this.handlebars = handlebars;
@@ -169,7 +172,7 @@ public class HandlebarsViewResolver extends AbstractTemplateViewResolver
   @Override
   protected AbstractUrlBasedView buildView(final String viewName)
       throws Exception {
-    return configure((HandlebarsView) super.buildView(viewName));
+    return configure((HandlebarsPdfView) super.buildView(viewName));
   }
 
   /**
@@ -179,7 +182,7 @@ public class HandlebarsViewResolver extends AbstractTemplateViewResolver
    * @return The configured view.
    * @throws IOException If a resource cannot be loaded.
    */
-  protected AbstractUrlBasedView configure(final HandlebarsView view)
+  protected AbstractUrlBasedView configure(final HandlebarsPdfView view)
       throws IOException {
     String url = view.getUrl();
     // Remove prefix & suffix.
@@ -205,7 +208,7 @@ public class HandlebarsViewResolver extends AbstractTemplateViewResolver
    */
   @Override
   protected Class<?> requiredViewClass() {
-    return HandlebarsView.class;
+    return HandlebarsPdfView.class;
   }
 
   @Override
@@ -440,7 +443,7 @@ public class HandlebarsViewResolver extends AbstractTemplateViewResolver
    * @return This handlebars object.
    */
   @Override
-  public HandlebarsViewResolver registerHelpers(final Object helperSource) {
+  public HandlebarsPdfViewResolver registerHelpers(final Object helperSource) {
     registry.registerHelpers(helperSource);
     return this;
   }
@@ -473,7 +476,7 @@ public class HandlebarsViewResolver extends AbstractTemplateViewResolver
    * @return This handlebars object.
    */
   @Override
-  public HandlebarsViewResolver registerHelpers(final Class<?> helperSource) {
+  public HandlebarsPdfViewResolver registerHelpers(final Class<?> helperSource) {
     registry.registerHelpers(helperSource);
     return this;
   }
@@ -489,45 +492,45 @@ public class HandlebarsViewResolver extends AbstractTemplateViewResolver
   }
 
   @Override
-  public <H> HandlebarsViewResolver registerHelper(final String name, final Helper<H> helper) {
+  public <H> HandlebarsPdfViewResolver registerHelper(final String name, final Helper<H> helper) {
     registry.registerHelper(name, helper);
     return this;
   }
 
   @Override
-  public <H> HandlebarsViewResolver registerHelperMissing(final Helper<H> helper) {
+  public <H> HandlebarsPdfViewResolver registerHelperMissing(final Helper<H> helper) {
     registry.registerHelperMissing(helper);
     return this;
   }
 
   @Override
-  public HandlebarsViewResolver registerHelpers(final URI location) throws Exception {
+  public HandlebarsPdfViewResolver registerHelpers(final URI location) throws Exception {
     registry.registerHelpers(location);
     return this;
   }
 
   @Override
-  public HandlebarsViewResolver registerHelpers(final File input) throws Exception {
+  public HandlebarsPdfViewResolver registerHelpers(final File input) throws Exception {
     registry.registerHelpers(input);
     return this;
   }
 
   @Override
-  public HandlebarsViewResolver registerHelpers(final String filename, final Reader source)
+  public HandlebarsPdfViewResolver registerHelpers(final String filename, final Reader source)
       throws Exception {
     registry.registerHelpers(filename, source);
     return this;
   }
 
   @Override
-  public HandlebarsViewResolver registerHelpers(final String filename, final InputStream source)
+  public HandlebarsPdfViewResolver registerHelpers(final String filename, final InputStream source)
       throws Exception {
     registry.registerHelpers(filename, source);
     return this;
   }
 
   @Override
-  public HandlebarsViewResolver registerHelpers(final String filename, final String source)
+  public HandlebarsPdfViewResolver registerHelpers(final String filename, final String source)
       throws IOException {
     registry.registerHelpers(filename, source);
     return this;
@@ -539,7 +542,7 @@ public class HandlebarsViewResolver extends AbstractTemplateViewResolver
    *
    * @return This handlebars view resolver.
    */
-  public HandlebarsViewResolver withoutMessageHelper() {
+  public HandlebarsPdfViewResolver withoutMessageHelper() {
     setRegisterMessageHelper(false);
     return this;
   }
@@ -600,12 +603,12 @@ public class HandlebarsViewResolver extends AbstractTemplateViewResolver
   }
 
   @Override
-  public HandlebarsViewResolver registerDecorator(final String name, final Decorator decorator) {
+  public HandlebarsPdfViewResolver registerDecorator(final String name, final Decorator decorator) {
     registry.registerDecorator(name, decorator);
     return this;
   }
 
-  @Override public HandlebarsViewResolver setCharset(final Charset charset) {
+  @Override public HandlebarsPdfViewResolver setCharset(final Charset charset) {
     this.charset = requireNonNull(charset, "Charset required.");
     return this;
   }

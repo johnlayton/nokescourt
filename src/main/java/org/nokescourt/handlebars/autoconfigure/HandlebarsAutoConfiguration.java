@@ -7,6 +7,7 @@ import com.github.jknack.handlebars.io.TemplateLoader;
 import com.github.jknack.handlebars.io.TemplateSource;
 import org.nokescourt.handlebars.springmvc.HandlebarsViewResolver;
 import jakarta.annotation.PostConstruct;
+import org.nokescourt.view.HandlebarsPdfViewResolver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -35,6 +36,13 @@ public class HandlebarsAutoConfiguration {
             handlebars.applyToMvcViewResolver(handlebarsViewResolver);
             return handlebarsViewResolver;
         }
+
+        @Bean
+        public HandlebarsPdfViewResolver handlebarsPdfViewResolver() {
+            HandlebarsPdfViewResolver handlebarsViewResolver = new HandlebarsPdfViewResolver();
+            handlebars.applyToMvcViewResolver(handlebarsViewResolver);
+            return handlebarsViewResolver;
+        }
     }
 
     @Configuration
@@ -50,6 +58,8 @@ public class HandlebarsAutoConfiguration {
     protected static class HandlebarsCachingStrategyConfiguration {
         @Autowired
         private HandlebarsViewResolver handlebarsViewResolver;
+        @Autowired
+        private HandlebarsPdfViewResolver handlebarsPdfViewResolver;
 
         @Autowired
         private TemplateCache templateCacheInstance;
@@ -59,6 +69,9 @@ public class HandlebarsAutoConfiguration {
             if (handlebarsViewResolver.isCache()) {
                 handlebarsViewResolver.getHandlebars().with(templateCacheInstance);
             }
+            if (handlebarsPdfViewResolver.isCache()) {
+                handlebarsPdfViewResolver.getHandlebars().with(templateCacheInstance);
+            }
         }
     }
 
@@ -67,6 +80,8 @@ public class HandlebarsAutoConfiguration {
     protected static class HandlebarsTemplateLoaderConfiguration {
         @Autowired
         private HandlebarsViewResolver handlebarsViewResolver;
+        @Autowired
+        private HandlebarsPdfViewResolver handlebarsPdfViewResolver;
 
         @Autowired
         private TemplateLoader templateLoader;
@@ -74,6 +89,7 @@ public class HandlebarsAutoConfiguration {
         @PostConstruct
         public void setTemplateLoader() {
             handlebarsViewResolver.getHandlebars().with(templateLoader);
+            handlebarsPdfViewResolver.getHandlebars().with(templateLoader);
         }
     }
 
@@ -82,10 +98,13 @@ public class HandlebarsAutoConfiguration {
     protected static class PrettyPrintConfiguration {
         @Autowired
         private HandlebarsViewResolver handlebarsViewResolver;
+        @Autowired
+        private HandlebarsPdfViewResolver handlebarsPdfViewResolver;
 
         @PostConstruct
         public void setPrettyPrint() {
             handlebarsViewResolver.getHandlebars().prettyPrint(true);
+            handlebarsPdfViewResolver.getHandlebars().prettyPrint(true);
         }
     }
 
@@ -94,10 +113,13 @@ public class HandlebarsAutoConfiguration {
     protected static class InfiniteLoopsConfiguration {
         @Autowired
         private HandlebarsViewResolver handlebarsViewResolver;
+        @Autowired
+        private HandlebarsPdfViewResolver handlebarsPdfViewResolver;
 
         @PostConstruct
         public void setInfiniteLoops() {
             handlebarsViewResolver.getHandlebars().infiniteLoops(true);
+            handlebarsPdfViewResolver.getHandlebars().infiniteLoops(true);
         }
     }
 }

@@ -9,6 +9,7 @@ import org.nokescourt.view.MyPdfViewResolver;
 import org.nokescourt.view.TxtView;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.accept.ContentNegotiationManager;
 import org.springframework.web.servlet.LocaleResolver;
@@ -23,6 +24,7 @@ import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
+import java.util.TimeZone;
 
 @Configuration
 public class ViewConfiguration {
@@ -38,12 +40,14 @@ public class ViewConfiguration {
         return new TxtView();
     }
 
+/*
     @Bean
     public MyPdfViewResolver myViewResolver() {
         MyPdfViewResolver myViewResolver = new MyPdfViewResolver();
         myViewResolver.setOrder(1);
         return myViewResolver;
     }
+*/
 
     @Bean
     public JsonViewResolver jsonViewResolver() {
@@ -84,7 +88,12 @@ public class ViewConfiguration {
     public static class OffsetDateTimeHelper implements Helper<OffsetDateTime> {
         @Override
         public Object apply(OffsetDateTime datetime, Options options) throws IOException {
-            return DateTimeFormatter.ofPattern(options.param(0, "M d y, H:m:s z")).format(datetime);
+            return DateTimeFormatter.ofPattern(options.param(0, "M d y, H:m:s"))
+                    .format(datetime.atZoneSameInstant(currentTimeZone().toZoneId()));
+        }
+
+        protected TimeZone currentTimeZone() {
+            return LocaleContextHolder.getTimeZone();
         }
     }
 }

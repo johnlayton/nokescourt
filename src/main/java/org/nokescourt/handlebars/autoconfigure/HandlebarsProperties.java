@@ -6,10 +6,12 @@ import com.github.jknack.handlebars.context.JavaBeanValueResolver;
 import com.github.jknack.handlebars.context.MapValueResolver;
 import com.github.jknack.handlebars.context.MethodValueResolver;
 import org.nokescourt.handlebars.springmvc.HandlebarsViewResolver;
+import org.nokescourt.view.HandlebarsPdfViewResolver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.template.AbstractTemplateViewResolverProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.http.MediaType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,21 +41,42 @@ public class HandlebarsProperties extends AbstractTemplateViewResolverProperties
     @Override
     public void applyToMvcViewResolver(Object viewResolver) {
         super.applyToMvcViewResolver(viewResolver);
-        isInstanceOf(HandlebarsViewResolver.class, viewResolver,
-                "ViewResolver is not an instance of HandlebarsViewResolver :" + viewResolver);
-        HandlebarsViewResolver resolver = (HandlebarsViewResolver) viewResolver;
+        if (viewResolver instanceof HandlebarsViewResolver vr) {
+//            isInstanceOf(HandlebarsViewResolver.class, viewResolver,
+//                    "ViewResolver is not an instance of HandlebarsViewResolver :" + viewResolver);
+//            HandlebarsViewResolver resolver = (HandlebarsViewResolver) viewResolver;
 
-        List<ValueResolver> valueResolvers = new ArrayList<ValueResolver>();
+            List<ValueResolver> valueResolvers = new ArrayList<ValueResolver>();
 
-        addValueResolverIfNeeded(valueResolvers, valueResolversProperties.isJavaBean(), JavaBeanValueResolver.INSTANCE);
-        addValueResolverIfNeeded(valueResolvers, valueResolversProperties.isMap(), MapValueResolver.INSTANCE);
-        addValueResolverIfNeeded(valueResolvers, valueResolversProperties.isField(), FieldValueResolver.INSTANCE);
-        addValueResolverIfNeeded(valueResolvers, valueResolversProperties.isMethod(), MethodValueResolver.INSTANCE);
+            addValueResolverIfNeeded(valueResolvers, valueResolversProperties.isJavaBean(), JavaBeanValueResolver.INSTANCE);
+            addValueResolverIfNeeded(valueResolvers, valueResolversProperties.isMap(), MapValueResolver.INSTANCE);
+            addValueResolverIfNeeded(valueResolvers, valueResolversProperties.isField(), FieldValueResolver.INSTANCE);
+            addValueResolverIfNeeded(valueResolvers, valueResolversProperties.isMethod(), MethodValueResolver.INSTANCE);
 
-        resolver.setValueResolvers(listToArray(valueResolvers));
-        resolver.setRegisterMessageHelper(registerMessageHelper);
-        resolver.setFailOnMissingFile(failOnMissingFile);
-        resolver.setBindI18nToMessageSource(bindI18nToMessageSource);
+            vr.setValueResolvers(listToArray(valueResolvers));
+            vr.setRegisterMessageHelper(registerMessageHelper);
+            vr.setFailOnMissingFile(failOnMissingFile);
+            vr.setBindI18nToMessageSource(bindI18nToMessageSource);
+        } else if (viewResolver instanceof HandlebarsPdfViewResolver vr) {
+//            isInstanceOf(HandlebarsViewResolver.class, viewResolver,
+//                    "ViewResolver is not an instance of HandlebarsViewResolver :" + viewResolver);
+//            HandlebarsViewResolver resolver = (HandlebarsViewResolver) viewResolver;
+
+            List<ValueResolver> valueResolvers = new ArrayList<ValueResolver>();
+
+            addValueResolverIfNeeded(valueResolvers, valueResolversProperties.isJavaBean(), JavaBeanValueResolver.INSTANCE);
+            addValueResolverIfNeeded(valueResolvers, valueResolversProperties.isMap(), MapValueResolver.INSTANCE);
+            addValueResolverIfNeeded(valueResolvers, valueResolversProperties.isField(), FieldValueResolver.INSTANCE);
+            addValueResolverIfNeeded(valueResolvers, valueResolversProperties.isMethod(), MethodValueResolver.INSTANCE);
+
+            vr.setContentType(MediaType.APPLICATION_PDF_VALUE);
+
+            vr.setValueResolvers(listToArray(valueResolvers));
+            vr.setRegisterMessageHelper(registerMessageHelper);
+            vr.setFailOnMissingFile(failOnMissingFile);
+            vr.setBindI18nToMessageSource(bindI18nToMessageSource);
+        }
+
     }
 
     public void setRegisterMessageHelper(Boolean registerMessageHelper) {
