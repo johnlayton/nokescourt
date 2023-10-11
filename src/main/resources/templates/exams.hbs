@@ -13,6 +13,12 @@
         table > tbody > tr > td {
             text-align: center;
         }
+
+        table > tbody > tr > td.session {
+            text-align: left;
+        }
+
+        /*#exams > tbody > tr:nth-child(1) > td:nth-child(3) */
     </style>
 </head>
 <body>
@@ -22,6 +28,7 @@
     <tr>
         <td>Course</td>
         <td>Exam</td>
+        <td>Session</td>
     </tr>
     </thead>
     <tbody>
@@ -29,6 +36,7 @@
         <tr>
             <td>{{ course.code }}</td>
             <td>{{ code }}</td>
+            <td class="session">{{ datetime start "dd MMM y, H:m"}} - {{ duration }}</td>
         </tr>
     {{/exams}}
     </tbody>

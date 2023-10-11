@@ -10,8 +10,8 @@
             crossorigin="anonymous"></script>
     <script src="https://unpkg.com/htmx.org@1.9.6/dist/ext/sse.js">
     </script>
-<!--    <script src="https://unpkg.com/htmx.org@1.9.6/dist/ext/client-side-templates.js">-->
-<!--    </script>-->
+    <!--    <script src="https://unpkg.com/htmx.org@1.9.6/dist/ext/client-side-templates.js">-->
+    <!--    </script>-->
     <script type="application/javascript">
         htmx.defineExtension('client-side-templates', {
             transformResponse : function(text, xhr, elt) {
@@ -116,10 +116,14 @@
     <!--
         <script src="https://unpkg.com/handlebars@4.7.8"></script>
     -->
-    <script src="https://unpkg.com/handlebars@latest"></script>
+    <!--
+        <script src="https://unpkg.com/handlebars@latest"></script>
+    -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.6/handlebars.min.js" integrity="sha512-zT3zHcFYbQwjHdKjCu6OMmETx8fJA9S7E6W7kBeFxultf75OPTYUJigEKX58qgyQMi1m1EgenfjMXlRZG8BXaw==" crossorigin="anonymous"></script>
+
     <!--    <script src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.js"></script>-->
-<!--        <script src="https://cdn.jsdelivr.net/npm/handlebars@4.7.8/dist/cjs/handlebars.min.js"></script>-->
-<!--    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/2.0.0/handlebars.min.js"></script>-->
+    <!--        <script src="https://cdn.jsdelivr.net/npm/handlebars@4.7.8/dist/cjs/handlebars.min.js"></script>-->
+    <!--    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/2.0.0/handlebars.min.js"></script>-->
     <script type="application/javascript">
         Handlebars.registerHelper('date', function (aString) {
             return new Date(aString).getSeconds();
@@ -182,11 +186,6 @@
     <!--
         <script src="http://localhost:8080/view/events/tmpl" id="event-list-item" type="text/mustache"></script>
     -->
-    <!--
-    <template id="event-list-item">
-        <li>{{#raw}}{{ id }} - {{#date}}{{ dt }}{{/date}}{{/raw}}</li>
-    </template>
--->
 </div>
 </body>
 </html>

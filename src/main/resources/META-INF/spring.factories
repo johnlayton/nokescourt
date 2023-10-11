@@ -1,0 +1,8 @@
+# Auto Configure
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+org.nokescourt.handlebars.autoconfigure.HandlebarsAutoConfiguration,\
+org.nokescourt.handlebars.autoconfigure.HandlebarsHelpersAutoConfiguration
+
+# Template availability providers
+org.springframework.boot.autoconfigure.template.TemplateAvailabilityProvider=\
+org.nokescourt.handlebars.autoconfigure.HandlebarsTemplateAvailabilityProvider

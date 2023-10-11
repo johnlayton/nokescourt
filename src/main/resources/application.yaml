@@ -19,3 +19,8 @@ spring:
     deserialization:
       ADJUST_DATES_TO_CONTEXT_TIME_ZONE: false
       FAIL_ON_UNKNOWN_PROPERTIES: true
+
+handlebars:
+  cache: false
+  resolver:
+    field: true

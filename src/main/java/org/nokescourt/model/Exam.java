@@ -1,4 +1,7 @@
 package org.nokescourt.model;
 
-public record Exam(Course course, String code) {
+import java.time.Duration;
+import java.time.OffsetDateTime;
+
+public record Exam(Course course, String code, OffsetDateTime start, Duration duration) {
 }
